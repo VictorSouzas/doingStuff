@@ -1,17 +1,21 @@
-from flask import abort, Flask
-app = Flask(__name__)
+import os
 
-@app.route('/')
-def hellp_world():
-    return 'Hello, world!'
+from flask import Flask
 
-@app.route('/not_found', methods=['GET',])
-def not_found():
-    abort(401)
 
-if __name__ == '__main__':
-    args = {
-        'host': '127.0.0.1', 'port': 8080,
-        'debug': True, 'load_dotenv': True
-    }
-    app.run(**args)
+def create_app(test_config=None):
+
+    app = Flask(__name__, instance_relative_config=True)
+    kwargs = {'SECRET_KEY': 'dev',
+              'DATABSE': os.path.join(app.instance_path, 'sqlite')}
+    app.config.from_mapping(os.path.join(**kwargs))
+
+    if test_config is None:
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        app.config.from_mapping(test_config)
+
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
