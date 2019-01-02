@@ -1,17 +1,6 @@
-from flask import abort
 from factory import create_app
 
 app = create_app()
-
-
-@app.route('/')
-def hellp_world():
-    return 'Hello, world!'
-
-
-@app.route('/not_found', methods=['GET', ])
-def not_found():
-    abort(401)
 
 if __name__ == '__main__':
     args = {
