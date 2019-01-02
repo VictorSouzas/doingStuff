@@ -1,5 +1,7 @@
-from flask import abort, Flask
-app = Flask(__name__)
+from flask import abort
+from factory import create_app
+
+app = create_app()
 
 
 @app.route('/')

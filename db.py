@@ -12,6 +12,11 @@ def init_db():
         db.executescript(file.read().decode('utf-8'))
 
 
+def init_app(app):
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
+
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(current_app.config['DATABASE'],
@@ -26,8 +31,8 @@ def close_db(e=None):
         db.close()
 
 
-@click.command('init_db')
+@click.command('init-db')
 @with_appcontext
 def init_db_command():
-    init_db
+    init_db()
     click.echo('Inicialized the database')
