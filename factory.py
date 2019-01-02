@@ -4,6 +4,8 @@ from flask import Flask
 
 import db
 
+from blueprints import post
+
 
 def create_app(test_config=None):
 
@@ -24,5 +26,7 @@ def create_app(test_config=None):
     db.init_app(app)
     with app.app_context():
         db.init_db()
+
+    app.register_blueprint(post.blueprint)
 
     return app
