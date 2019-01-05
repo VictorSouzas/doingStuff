@@ -1,19 +1,23 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from flask_sqlalchemy import SQLAlchemy
 
-Base = declarative_base()
+db = SQLAlchemy()
 
 
-class User(Base):
+class User(db.Model):
     """User Model."""
 
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    fullname = Column(String)
-    password = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String)
+    fullname = db.Column(db.String)
+    password = db.Column(db.String)
 
     def get_user_id(self):
         """Return self.id."""
         return self.id
+
+    def validate_password(self, password):
+        """Return bollean."""
+        return self.password == password
